@@ -1,0 +1,8 @@
+Revision history for WWW-CDBaby
+
+0.01    2007-07-31
+        First version, released on an unsuspecting world.
+        - get_cd_sales method
+        - Added get_cd_sales sample script in samples_script directory.
+        - Updated README, Changes, MANIFEST, docs in CDBaby.pm
+

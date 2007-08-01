@@ -1,0 +1,29 @@
+#!/usr/bin/perl -w -I../lib
+######################################################################
+# get_cd_sales
+# Sccsid:  %Z%  %M%  %I%  Delta: %G%
+# $Id: get_cd_sales,v 1.1 2007/08/01 04:11:07 grant Exp $
+######################################################################
+# Copyright (c) 2007 Grant Grueninger, Commercial Systems Corp.
+#
+# Description:
+# Report on CD Baby album sales
+
+use WWW::CDBaby;
+
+my $cdbaby = new WWW::CDBaby( auto_login=>1 );
+
+my ( @sales ) = $cdbaby->get_cd_sales( @ARGV );
+
+my $total=0;
+foreach $sale ( @sales ) {
+    foreach my $fn ( keys( %{$sale} ) ) {
+        printf( "%10s: %20s\n", $fn, $sale->{"$fn"} ) if ( $sale->{"$fn"} );
+    }
+
+    print "\n\n";
+    $total += $sale->{'paid_to_you'};
+}
+
+print "Total profits: \$$total\n";
+

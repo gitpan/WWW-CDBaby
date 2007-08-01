@@ -1,0 +1,196 @@
+package WWW::CDBaby;
+
+use WWW::Sitebase::Navigator -Base;
+use warnings;
+use strict;
+
+our $DEBUG = 0;
+
+=head1 NAME
+
+WWW::CDBaby - Automate interaction with cdbaby.com!
+
+=head1 VERSION
+
+Version 0.01
+
+=cut
+
+our $VERSION = '0.01';
+
+=head1 SYNOPSIS
+
+    my $cdbaby = new WWW::CDBaby( "$account_name", "$password" );
+    
+    # Print the name of the first person who bought your CD
+    my ( @sales ) $cdbaby->get_cd_sales( $album_id );
+    print $sales[0]->{'name'};
+
+=cut
+
+field site_info => {
+       home_page => 'https://members.cdbaby.com', # URL of site's homepage
+       account_field => 'login_username', # Fieldname from the login form
+       password_field => 'login_password', # Password fieldname
+       cache_dir => '.www-cdbaby',
+       login_verify_re => 'Members Login HOME', # (optional)
+               # Non-case-sensitive RE we should see once we're logged in
+       not_logged_in_re => 'LOG IN to your CD Baby',
+               # If we log in and it fails (bad password, account suddenly
+               # gets logged out), the page will have this RE on it.
+               # Case insensitive.
+       home_uri_re => 'members\.cdbaby\.com\/home',
+               # _go_home uses this and the next two items to load
+               # the home page.  You can provide these options or
+               # just override the method.
+               # First, this is matched against the current URL to see if we're
+               # already on the home page.
+       home_link_re => 'members\.cdbaby\/com\/home',
+               # If we're not on the home page, this RE is
+               # used to find a link to the "Home" button on the current
+               # page.
+       home_url => 'https://members.cdbaby.com/home',
+               # If the "Home" button link isn't found, this URL is
+               # retreived.
+       error_regexs => [
+       ],
+               # error_regexs is optional.  If the site you're navigating
+               # displays  error pages that do not return proper HTTP Status
+               # codes (i.e. returns a 200 but displays an error), you can enter
+               # REs here and any page that matches will be retried.
+               # This is meant for IIS and ColdFusion-based sites that
+               # periodically spew error messages that go away when tried again
+};
+
+
+=head1 METHODS
+
+=head2 C<get_cd_sales( album_id )>
+
+Pass this method the URL of your album.  If you can see your
+album at "cdbaby.com/amberg", your album_id is "amberg".
+
+It returns an array of hashrefs containing all your physical album sales.
+Digital sales are tracked separately.
+
+This method gets the text-delimited file you get if you log into
+members.cdbaby.com, click "Accounting", click the "$ sold" amount next
+to the album name, and click the "download your sales in a tab-delimited text
+file" link.  See how much easier this method is? ;-)
+
+    use WWW::CDBaby;
+
+    my $cdbaby = new WWW::CDBaby;
+
+    my ( @sales ) = $cdbaby->get_sales( $album_id );
+
+    my $total=0;
+    foreach $sale ( @sales ) {
+        $total += $sale->{'paid_to_you'};
+    }
+    
+    print "Total profits: \$$total\n";
+
+=cut
+
+sub get_cd_sales {
+
+    my ( $album_id ) = @_;
+    
+    my $res = $self->get_page( "http://members.cdbaby.com/show_sales_download/$album_id.txt" )
+        or return;
+    
+    my $page = $res->decoded_content;
+    
+    # First line is the field names
+    my $count = 0;
+    my @field_arr = ();
+    my @fieldnames = ();
+    # Loop through each line.  First line is the field names
+    foreach my $line ( split( "\n", $page ) ) {
+
+        # Split the fields into an array.
+        my @fields = split( "\t", $line );
+        
+        # If it's the first row, just store the fieldnames, otherwise
+        # process the fields.
+        if ( $count ) {
+            ( $DEBUG ) && print join("\t", @fields) . "\n";
+            
+            # Set our counters. We step through each of the @fields array, which
+            # contain the values, and the @fieldnames array, which contains the names
+            # of the fields, and create a fieldname => value hash for the row.
+            my $i=0; my %row = ();
+            foreach my $fn ( @fieldnames ) {
+                $row{"$fn"} = $fields[ $i ];
+                $i++;
+            }
+
+            # Add the row we created to the array we'll return
+            push ( @field_arr, \%row );
+        } else {        
+            @fieldnames = @fields
+        }
+
+        # This probably could be a flag since it's just used to see if we're on
+        # the first row, but it's a counter.
+        $count++;
+    }
+
+    # We're returning a list of hashrefs.
+    return ( @field_arr );
+
+}
+
+=head1 AUTHOR
+
+Grant Grueninger, C<< <grantg at cpan.org> >>
+
+=head1 BUGS
+
+Please report any bugs or feature requests to
+C<bug-www-cdbaby at rt.cpan.org>, or through the web interface at
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=WWW-CDBaby>.
+I will be notified, and then you'll automatically be notified of progress on
+your bug as I make changes.
+
+=head1 SUPPORT
+
+You can find documentation for this module with the perldoc command.
+
+    perldoc WWW::CDBaby
+
+You can also look for information at:
+
+=over 4
+
+=item * AnnoCPAN: Annotated CPAN documentation
+
+L<http://annocpan.org/dist/WWW-CDBaby>
+
+=item * CPAN Ratings
+
+L<http://cpanratings.perl.org/d/WWW-CDBaby>
+
+=item * RT: CPAN's request tracker
+
+L<http://rt.cpan.org/NoAuth/Bugs.html?Dist=WWW-CDBaby>
+
+=item * Search CPAN
+
+L<http://search.cpan.org/dist/WWW-CDBaby>
+
+=back
+
+=head1 ACKNOWLEDGEMENTS
+
+=head1 COPYRIGHT & LICENSE
+
+Copyright 2007 Grant Grueninger, all rights reserved.
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+=cut
+
+1; # End of WWW::CDBaby
