@@ -5,6 +5,7 @@ Makefile.PL
 README
 lib/WWW/CDBaby.pm
 sample_scripts/get_cd_sales
+sample_scripts/get_dd_sales
 t/00-load.t
 t/boilerplate.t
 t/pod-coverage.t

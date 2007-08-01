@@ -1,10 +1,9 @@
 WWW-CDBaby
 
-WWW::CDBaby automates access to your cdbaby.com information.
-As of this writing it allows you to access your CD Sales information,
-but contains room (and given how well I keep my README files updated,
-may already) for addition of any number of methods to get digital
-sales, and any other info you may need to process.
+WWW::CDBaby automates access to your cdbaby.com information. As of this
+writing it allows you to access your CD and digital sales information,
+but contains room for addition of any number of methods to get any other
+info you may need to process.
 
 
 INSTALLATION

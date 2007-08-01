@@ -1,5 +1,15 @@
 Revision history for WWW-CDBaby
 
+0.03    2007-08-01
+        - Added get_dd_sales method
+        - get_cd_sales and get_dd_sales will croak if not passed an
+          album_id
+        - Updated feature list in README
+
+0.02    2007-07-031
+        - Added login_form_no to site_info for compatibility with
+          WWW::Sitebase::Navigator 0.03.
+
 0.01    2007-07-31
         First version, released on an unsuspecting world.
         - get_cd_sales method

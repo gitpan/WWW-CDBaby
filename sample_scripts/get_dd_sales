@@ -1,0 +1,29 @@
+#!/usr/bin/perl -w -I../lib
+######################################################################
+# get_dd_sales
+# Sccsid:  %Z%  %M%  %I%  Delta: %G%
+# $Id: get_dd_sales,v 1.1 2007/08/01 19:16:01 grant Exp $
+######################################################################
+# Copyright (c) 2007 Grant Grueninger, Commercial Systems Corp.
+#
+# Description:
+# Report on CD Baby digital distribution sales
+
+use WWW::CDBaby;
+
+my $cdbaby = new WWW::CDBaby( auto_login=>1 );
+
+my ( @sales ) = $cdbaby->get_dd_sales( @ARGV );
+
+my $total=0;
+foreach $sale ( @sales ) {
+    foreach my $fn ( keys( %{$sale} ) ) {
+        printf( "%13s: %20s\n", $fn, $sale->{"$fn"} ) if ( $sale->{"$fn"} );
+    }
+
+    print "\n\n";
+    $total += $sale->{'subtotal'};
+}
+
+print "Total profits: \$$total\n";
+
