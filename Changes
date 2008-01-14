@@ -1,5 +1,10 @@
 Revision history for WWW-CDBaby
 
+0.04    2008-01-14
+        - Added field names to get_cd_sales docs
+        - Corrected get_dd_method to return "quantity" instead of "no", as the
+          docs say.
+
 0.03    2007-08-01
         - Added get_dd_sales method
         - get_cd_sales and get_dd_sales will croak if not passed an

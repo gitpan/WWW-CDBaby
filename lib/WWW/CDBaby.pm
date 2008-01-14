@@ -17,7 +17,7 @@ Version 0.03
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 =head1 SYNOPSIS
 
@@ -93,6 +93,24 @@ file" link.  See how much easier this method is? ;-)
     
     print "Total profits: \$$total\n";
 
+FIelds returned as of 1/14/08 are:
+
+ date
+ quantity
+ sell_price
+ wholesale
+ paid_to_you
+ name
+ referred_by
+ ship_inst
+ email
+ addr1
+ addr2
+ city
+ state
+ postalcode
+ country
+
 =cut
 
 sub get_cd_sales {
@@ -166,7 +184,7 @@ them program-friendly:
  caps are made lower case.
  Any remaining characters that aren't letters, numbers, or _ are stripped
 
-The current keys returned (as of 8/1/2007) are:
+The current keys returned (as of 1/14/2008) are:
 
  company
  sales_date
@@ -178,7 +196,9 @@ The current keys returned (as of 8/1/2007) are:
 
 As these keys are taken directly from the headers at the top of the table,
 if rows are added or removed or the headers are changed by CD Baby,
-the keys to your hash will change accordingly.
+the keys to your hash will change accordingly.  Note that the "#" header,
+however, is translated into "quantity".  Prior to version 0.04, this was
+incorrectly translated to "no" (although documented as translating to "quantity").
 
 Also, the dollar sign ("$") from the price fields is removed so you can
 do things like the example below:
@@ -223,7 +243,7 @@ sub get_dd_sales {
         my $fn = $2;
         $fn =~ s/^\s*(.*)\s*$/$1/; # Strip trailing & leading whitespace
         $fn =~ s/\s+/_/g;          # Turn whitespace into _
-        $fn =~ s/^#$/no/g;         # Turn a lone "#" into "quantity"
+        $fn =~ s/^#$/quantity/g;   # Turn a lone "#" into "quantity"
         $fn = lc( $fn );           # Make it all lower case
         $fn =~ s/[^a-z0-9_]//g;    # Strip anything else
         push ( @fieldnames, "$fn" );
