@@ -1,5 +1,10 @@
 Revision history for WWW-CDBaby
 
+0.05    2008-01-19
+        - Removed Mac-specific files that snuck into the distribution
+          causing pod tests to fail.
+        - Fixed version number in CDBaby.pm pod
+
 0.04    2008-01-14
         - Added field names to get_cd_sales docs
         - Corrected get_dd_method to return "quantity" instead of "no", as the
