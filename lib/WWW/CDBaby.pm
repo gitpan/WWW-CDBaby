@@ -5,7 +5,7 @@ use warnings;
 use strict;
 use Carp;
 
-our $DEBUG = 0;
+our $DEBUG = 1;
 
 =head1 NAME
 
@@ -13,11 +13,11 @@ WWW::CDBaby - Automate interaction with cdbaby.com!
 
 =head1 VERSION
 
-Version 0.06
+Version 0.07
 
 =cut
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 =head1 SYNOPSIS
 
@@ -238,8 +238,10 @@ sub get_dd_sales {
     ( $DEBUG ) && print "Parsing headers...\n";
     # Get the headers
     my $page = $res->decoded_content;
+    my $top = $page;
+    $top =~ s/.*?<tr.*?>(<th.*?>.*?<\/tr>).*/$1/ismo;
 
-    while ( $page =~ s/.*?<th.*?>(<a .*?>)?(.*?)<//ismo ) {
+    while ( $top =~ s/.*?<th.*?>(<a .*?>)?(.*?)<//ismo ) {
         my $fn = $2;
         $fn =~ s/^\s*(.*)\s*$/$1/; # Strip trailing & leading whitespace
         $fn =~ s/\s+/_/g;          # Turn whitespace into _

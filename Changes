@@ -1,5 +1,9 @@
 Revision history for WWW-CDBaby
 
+0.07    2008-08-29
+        - Fixed Regex in get_dd_sales that caused no data to print
+          in previous version.
+
 0.06    2008-08-29
         - Fixed Regex in get_dd_sales due to change in CD Baby output.
           Change would cause subtotal field to be missed, causing
