@@ -1,12 +1,15 @@
-# http://module-build.sourceforge.net/META-spec.html
-#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
-name:         WWW-CDBaby
-version:      0.05
-version_from: lib/WWW/CDBaby.pm
-installdirs:  site
-requires:
+--- #YAML:1.0
+name:                WWW-CDBaby
+version:             0.06
+abstract:            Automate interaction with cdbaby.com!
+license:             ~
+author:              
+    - Grant Grueninger <grantg@cpan.org>
+generated_by:        ExtUtils::MakeMaker version 6.44
+distribution_type:   module
+requires:     
     Test::More:                    0
     WWW::Sitebase::Navigator:      0
-
-distribution_type: module
-generated_by: ExtUtils::MakeMaker version 6.30
+meta-spec:
+    url:     http://module-build.sourceforge.net/META-spec-v1.3.html
+    version: 1.3

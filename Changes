@@ -1,5 +1,10 @@
 Revision history for WWW-CDBaby
 
+0.06    2008-08-29
+        - Fixed Regex in get_dd_sales due to change in CD Baby output.
+          Change would cause subtotal field to be missed, causing
+          rotation of data through remaining fields.
+
 0.05    2008-01-19
         - Removed Mac-specific files that snuck into the distribution
           causing pod tests to fail.

@@ -13,11 +13,11 @@ WWW::CDBaby - Automate interaction with cdbaby.com!
 
 =head1 VERSION
 
-Version 0.05
+Version 0.06
 
 =cut
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
 =head1 SYNOPSIS
 
@@ -239,7 +239,7 @@ sub get_dd_sales {
     # Get the headers
     my $page = $res->decoded_content;
 
-    while ( $page =~ s/.*?<th>(<a .*?>)?(.*?)<//ismo ) {
+    while ( $page =~ s/.*?<th.*?>(<a .*?>)?(.*?)<//ismo ) {
         my $fn = $2;
         $fn =~ s/^\s*(.*)\s*$/$1/; # Strip trailing & leading whitespace
         $fn =~ s/\s+/_/g;          # Turn whitespace into _
@@ -258,7 +258,7 @@ sub get_dd_sales {
     # to the next row.
     my $count=0;
     my %row = ();
-    while ( $page =~ s/.*?<td>(<a .*?>)?(.*?)<\/td>//ismo ) {
+    while ( $page =~ s/.*?<td.*?>(<a .*?>)?(.*?)<\/td>//ismo ) {
         my $fv = $2;
         $fv =~ s/^\s*(.*)\s*$/$1/; # Strip trailing & leading whitespace
         $fv =~ s/<.*?>//g;  # Strip links
