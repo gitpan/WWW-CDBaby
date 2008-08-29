@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                WWW-CDBaby
-version:             0.07
+version:             0.08
 abstract:            Automate interaction with cdbaby.com!
 license:             ~
 author:              

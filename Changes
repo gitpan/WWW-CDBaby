@@ -1,5 +1,10 @@
 Revision history for WWW-CDBaby
 
+0.08    2008-08-29
+        - Turned off debugging output...
+        - Updated Regex in get_dd_sales to strip off top header row
+          and bottom TOTAL row to prevent problems.
+
 0.07    2008-08-29
         - Fixed Regex in get_dd_sales that caused no data to print
           in previous version.
